@@ -3,16 +3,17 @@
 그래프 알고리즘으로 두 노드가 같은 그래프에 속하는지 판별하는 알고리즘
 
 #특정 원소가 속한 집합을 찾기
-def find(x):
+# 경로 압축을 위하여 parent를 불러버리기
+def find_parent(x):
 # 재귀를 이용하여 루트 노드를 찾기
     if parent[x] != x:
-        return find(parent(x))
-    return x
+        parent[x] = find_parent(parent[x])
+    return parent[x]
 
 # 두원소가 속한 집합을 합치기
 def union(a,b):
-    a=find(a)
-    b=find(b)
+    a=find_parent(a)
+    b=find_parent(b)
 # 더작은 노드에 자신을 추가
     if a<b:
         parent[b]=a
@@ -21,7 +22,7 @@ def union(a,b):
 
 # 노드의 개수와 간선(Union 연산)의 개수 입력 받기
 v, e = map(int,input().split())
-oarent=[0] *(v+1)
+parent=[0] *(v+1)
 
 for i in range(1,v+1):
     parent[i] = i
@@ -35,7 +36,7 @@ for i in range(e):
 # 각 원소가 속한 집합 출력하기
 print("각 원소가 속한 집합: ", end=" ")
 for i in range(1,v+1):
-    print(find(i), end="  ")
+    print(find_parent(i), end="  ")
 
 print()
 
