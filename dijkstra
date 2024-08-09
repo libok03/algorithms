@@ -10,3 +10,29 @@
 # 도착 노드가 방문 완료 상태가 되거나, 혹은 더 이상 미방문 상태의 노드를 선택할 수 없을 때까지, 
 # 3~7의 과정을 반복한다.
 # 이 작업을 마친 뒤, 도착 노드에 저장된 값이 바로 X 로부터의 최단 거리이다. 만약 이 값이 INF라면, 중간에 길이 끊긴 것임을 의미한다.
+
+
+def daykstra(start):
+    # 거리 저장용
+    dv=[INF] * (N+1)
+    dv[start]=0
+    # 우선순이 큐를 이용하여 (0,start)저장
+    priority_queue = [(0,start)]
+    # 우선순위 큐에서
+    while priority_queue:
+        # 가장 작은 수의 dist를 가지는 노드를 꺼내 와서
+        curr_dist, curr_node = heapq.heappop(priority_queue)
+        # 그 길이가 새로 만든 길이보다 작다면
+        if curr_dist > dv[curr_node]:
+            continue
+
+        # 그 노드의 이어진 그래프에서
+        for adj_node,adj_dist in graph[curr_node]:
+            distance = curr_dist + adj_dist
+            # 새로 구한 거리가 더 작다면
+            if distance < dv[adj_node]:
+                # 바꿔주고
+                dv[adj_node] = distance
+                # 우선 순위 큐에 집어넣기
+                heapq.heappush(priority_queue,(distance,adj_node))
+    return dv
